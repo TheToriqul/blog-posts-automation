@@ -24,15 +24,12 @@ jobs:
     - name: Create output directory
       run: mkdir -p dist
     
-    - name: Add scripts to Python path
-      run: |
-        echo "PYTHONPATH=$PYTHONPATH:$PWD" >> $GITHUB_ENV
-    
     - name: Run publication script
       env:
         MEDIUM_TOKEN: ${{ secrets.MEDIUM_TOKEN }}
-        DEVTO_API_KEY: ${{ secrets.DEVTO_API_KEY }}
         MARKDOWN_DIR: ./posts
         HTML_OUTPUT_DIR: ./dist
+        PYTHONPATH: ${{ github.workspace }}/scripts
       run: |
-        python scripts/publish_posts.py
+        cd scripts
+        python publish_posts.py
