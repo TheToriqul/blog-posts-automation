@@ -1,13 +1,13 @@
 from pathlib import Path
 import time
 from datetime import datetime
-from convert_markdown import MarkdownConverter
-from publish_medium import MediumPublisher
-from publish_devto import DevToPublisher
-from post_tracker import PostTracker
-from config.settings import Settings
-from utils.logger import get_logger
-from utils.exceptions import PublishError
+from .convert_markdown import MarkdownConverter
+from .publish_medium import MediumPublisher
+from .publish_devto import DevToPublisher
+from .post_tracker import PostTracker
+from .config.settings import Settings
+from .utils.logger import get_logger
+from .utils.exceptions import PublishError
 
 def main():
     logger = get_logger(__name__)
@@ -24,6 +24,8 @@ def main():
         # Get all markdown files
         markdown_dir = Path(Settings.MARKDOWN_DIR)
         all_files = {str(f.relative_to(markdown_dir)) for f in markdown_dir.glob('*.md')}
+        
+        logger.info(f"Found markdown files: {all_files}")
         
         # Get unpublished files
         needs_publishing = tracker.get_unpublished_files(all_files)
