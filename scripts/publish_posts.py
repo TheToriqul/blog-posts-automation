@@ -1,3 +1,6 @@
+from pathlib import Path
+import time
+import hashlib
 from convert_markdown import MarkdownConverter
 from publish_medium import MediumPublisher
 from publish_devto import DevToPublisher
@@ -5,7 +8,12 @@ from post_tracker import PostTracker
 from config.settings import Settings
 from utils.logger import get_logger
 from utils.exceptions import PublishError
-import time
+
+def calculate_content_hash(file_path: Path) -> str:
+    """Calculate hash of file content to detect changes"""
+    with open(file_path, 'rb') as f:
+        content = f.read()
+        return hashlib.md5(content).hexdigest()
 
 def main():
     logger = get_logger(__name__)
@@ -76,13 +84,6 @@ def main():
     except Exception as e:
         logger.error(f"An error occurred: {str(e)}")
         raise
-
-def calculate_content_hash(file_path: Path) -> str:
-    """Calculate hash of file content to detect changes"""
-    import hashlib
-    with open(file_path, 'rb') as f:
-        content = f.read()
-        return hashlib.md5(content).hexdigest()
 
 if __name__ == "__main__":
     main()
