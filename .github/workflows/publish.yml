@@ -16,6 +16,13 @@ jobs:
       with:
         python-version: '3.x'
     
+    - name: Download previous tracking data
+      uses: actions/download-artifact@v2
+      continue-on-error: true
+      with:
+        name: tracking-data
+        path: .tracking
+
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
@@ -36,3 +43,11 @@ jobs:
         HTML_OUTPUT_DIR: ./dist
       run: |
         python scripts/publish_posts.py
+
+    - name: Upload tracking data
+      uses: actions/upload-artifact@v2
+      if: always()  # Upload even if the script fails
+      with:
+        name: tracking-data
+        path: .tracking/
+        retention-days: 90  # Keep tracking data for 90 days
