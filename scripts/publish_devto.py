@@ -1,9 +1,9 @@
-# publish_devto.py
+# scripts/publish_devto.py
 import requests
 from typing import Dict, Any
-from .utils.logger import get_logger
-from .utils.exceptions import PublishError
-from .config.settings import Settings
+from utils.logger import get_logger
+from utils.exceptions import PublishError
+from config.settings import Settings
 
 class DevToPublisher:
     """Handles publishing to Dev.to"""
