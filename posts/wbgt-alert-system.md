@@ -3,6 +3,7 @@ title: Building an Automated Heat Stress Monitoring System with Microsoft Power 
 description: The Wet Bulb Globe Temperature (WBGT) Alert System presents an innovative approach to automating heat stress monitoring using readily available tools like Microsoft Forms, Power Automate, and Telegram.
 tags: wbgt_alert, wbgt_telegram
 ---
+# Building an Automated Heat Stress Monitoring System with Microsoft Power Platform and Telegram
 
 In today's industrial environments, worker safety is paramount, particularly when it comes to heat stress management. The Wet Bulb Globe Temperature (WBGT) Alert System presents an innovative approach to automating heat stress monitoring using readily available tools like Microsoft Forms, Power Automate, and Telegram. In this technical deep dive, we'll explore how this system works and how you can implement it in your organization.
 
