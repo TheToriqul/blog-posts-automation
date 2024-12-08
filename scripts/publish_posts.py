@@ -1,4 +1,3 @@
-# scripts/publish_posts.py
 from convert_markdown import MarkdownConverter
 from publish_medium import MediumPublisher
 from publish_devto import DevToPublisher
@@ -11,7 +10,6 @@ def main():
     try:
         # Initialize components
         logger.info("Starting blog post publication process...")
-        Settings.validate_config()
         
         converter = MarkdownConverter(Settings.MARKDOWN_DIR, Settings.OUTPUT_DIR)
         medium_publisher = MediumPublisher(Settings.MEDIUM_TOKEN)

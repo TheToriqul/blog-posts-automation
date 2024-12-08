@@ -1,3 +1,8 @@
+import requests
+from typing import Dict, Any
+from utils.logger import get_logger
+from utils.exceptions import PublishError
+
 class MediumPublisher:
     def __init__(self, token: str):
         self.token = token
@@ -15,10 +20,10 @@ class MediumPublisher:
             response = requests.get(
                 f"{self.api_base}/me", 
                 headers=self.headers,
-                timeout=10  # Add timeout
+                timeout=10
             )
             
-            response.raise_for_status()  # Will raise an exception for 4XX/5XX status codes
+            response.raise_for_status()
             
             data = response.json()
             if 'data' not in data or 'id' not in data['data']:
@@ -49,7 +54,7 @@ class MediumPublisher:
                 'content': content['content'],
                 'tags': tags[:5],  # Medium allows max 5 tags
                 'publishStatus': 'draft',
-                'notifyFollowers': False  # Add this to ensure it works in draft mode
+                'notifyFollowers': False
             }
             
             response = requests.post(
