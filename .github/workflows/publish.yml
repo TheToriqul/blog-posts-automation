@@ -16,12 +16,25 @@ jobs:
       with:
         python-version: '3.x'
     
+    - name: Initialize tracking directory
+      run: |
+        mkdir -p .tracking
+        if [ ! -f .tracking/published_posts.json ]; then
+          echo "{}" > .tracking/published_posts.json
+        fi
+
     - name: Download previous tracking data
       uses: actions/download-artifact@v4
       continue-on-error: true
       with:
         name: tracking-data
         path: .tracking
+        
+    - name: Verify tracking file
+      run: |
+        if [ ! -f .tracking/published_posts.json ]; then
+          echo "{}" > .tracking/published_posts.json
+        fi
 
     - name: Install dependencies
       run: |
@@ -46,7 +59,7 @@ jobs:
 
     - name: Upload tracking data
       uses: actions/upload-artifact@v4
-      if: always()                        # Upload even if the script fails
+      if: always()  # Upload even if the script fails
       with:
         name: tracking-data
         path: .tracking/
