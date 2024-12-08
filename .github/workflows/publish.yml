@@ -1,10 +1,8 @@
 name: Publish Blog Posts
 
 on:
-  push:
-    paths:
-      - 'posts/**'
-  workflow_dispatch:
+  push:  # This will now trigger on every push
+  workflow_dispatch:  # Keeping manual trigger option
 
 jobs:
   publish:
