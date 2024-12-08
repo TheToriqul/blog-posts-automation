@@ -1,8 +1,8 @@
 import requests
 import time
 from typing import Dict, Any
-from utils.logger import get_logger
-from utils.exceptions import PublishError
+from .utils.logger import get_logger
+from .utils.exceptions import PublishError
 
 class MediumPublisher:
     def __init__(self, token: str):

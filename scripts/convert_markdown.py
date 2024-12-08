@@ -3,9 +3,9 @@ import frontmatter
 import markdown2
 import json
 from typing import Dict, Any, List
-from utils.logger import get_logger
-from utils.exceptions import ConversionError
-from utils.validators import validate_frontmatter
+from .utils.logger import get_logger
+from .utils.exceptions import ConversionError
+from .utils.validators import validate_frontmatter
 
 class MarkdownConverter:
     """Converts markdown posts to HTML/JSON with metadata"""

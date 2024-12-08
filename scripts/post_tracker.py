@@ -3,15 +3,10 @@ from pathlib import Path
 from typing import Dict, Set, Optional, Tuple, Any
 from datetime import datetime, timedelta
 import hashlib
-from utils.logger import get_logger
-from utils.exceptions import TrackingError
+from .utils.logger import get_logger
+from .utils.exceptions import TrackingError
 
 class PostTracker:
-    """
-    Enhanced tracking system for blog post publications across multiple platforms
-    with reliable file handling and state preservation.
-    """
-    
     def __init__(self, base_dir: Optional[str] = None):
         """
         Initialize the post tracker

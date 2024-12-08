@@ -1,8 +1,8 @@
 import requests
 import re
 from typing import Dict, Any, List
-from utils.logger import get_logger
-from utils.exceptions import PublishError
+from .utils.logger import get_logger
+from .utils.exceptions import PublishError
 
 class DevToPublisher:
     def __init__(self, api_key: str):
