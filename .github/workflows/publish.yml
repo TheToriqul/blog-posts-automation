@@ -1,8 +1,8 @@
 name: Publish Blog Posts
 
 on:
-  push:  # This will now trigger on every push
-  workflow_dispatch:  # Keeping manual trigger option
+  push:
+  workflow_dispatch:
 
 jobs:
   publish:
@@ -35,21 +35,4 @@ jobs:
         MARKDOWN_DIR: ./posts
         HTML_OUTPUT_DIR: ./dist
       run: |
-        python -c "
-        from scripts.convert_markdown import MarkdownConverter
-        from scripts.publish_medium import MediumPublisher
-        from scripts.publish_devto import DevToPublisher
-        from scripts.config.settings import Settings
-
-        # Initialize components
-        Settings.validate_config()
-        converter = MarkdownConverter(Settings.MARKDOWN_DIR, Settings.OUTPUT_DIR)
-        medium_publisher = MediumPublisher(Settings.MEDIUM_TOKEN)
-        devto_publisher = DevToPublisher(Settings.DEVTO_API_KEY)
-
-        # Process and publish
-        converted_posts = converter.convert()
-        for post in converted_posts:
-            medium_result = medium_publisher.publish(post)
-            devto_result = devto_publisher.publish(post)
-        "
+        python scripts/publish_posts.py

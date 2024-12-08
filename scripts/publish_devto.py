@@ -1,52 +1,43 @@
-# publish_medium.py
+# publish_devto.py
 import requests
 from typing import Dict, Any
 from .utils.logger import get_logger
 from .utils.exceptions import PublishError
 from .config.settings import Settings
 
-class MediumPublisher:
-    """Handles publishing to Medium"""
-    def __init__(self, token: str):
-        self.token = token
-        self.api_base = Settings.MEDIUM_API_BASE
+class DevToPublisher:
+    """Handles publishing to Dev.to"""
+    def __init__(self, api_key: str):
+        self.api_key = api_key
+        self.api_base = Settings.DEVTO_API_BASE
         self.logger = get_logger(__name__)
         self.headers = {
-            'Authorization': f'Bearer {self.token}',
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'
+            'api-key': self.api_key,
+            'content-type': 'application/json'
         }
     
-    def _get_user_id(self) -> str:
-        """Get Medium user ID"""
-        response = requests.get(f"{self.api_base}/me", headers=self.headers)
-        if response.status_code != 200:
-            raise PublishError("Failed to get Medium user ID", "medium")
-        return response.json()['data']['id']
-    
     def publish(self, content: Dict[str, Any]) -> Dict[str, Any]:
-        """Publish content to Medium"""
+        """Publish content to Dev.to"""
         try:
-            user_id = self._get_user_id()
-            
             post_data = {
-                'title': content['metadata']['title'],
-                'contentFormat': 'html',
-                'content': content['content'],
-                'tags': content['metadata']['tags'],
-                'publishStatus': 'draft'
+                'article': {
+                    'title': content['metadata']['title'],
+                    'body_markdown': content['content'],
+                    'published': False,
+                    'tags': content['metadata']['tags']
+                }
             }
             
             response = requests.post(
-                f"{self.api_base}/users/{user_id}/posts",
+                f"{self.api_base}/articles",
                 headers=self.headers,
                 json=post_data
             )
             
             if response.status_code != 201:
-                raise PublishError(f"Failed to publish to Medium: {response.text}", "medium")
+                raise PublishError(f"Failed to publish to Dev.to: {response.text}", "dev.to")
             
             return response.json()
             
         except Exception as e:
-            raise PublishError(str(e), "medium")
+            raise PublishError(str(e), "dev.to")
