@@ -69,8 +69,8 @@ class MediumPublisher:
             'contentFormat': 'html',
             'content': html_content,
             'tags': tags[:5],  # Medium allows max 5 tags
-            'publishStatus': 'draft',
-            'notifyFollowers': False
+            'publishStatus': 'publish_status',
+            'notifyFollowers': True
         }
     
     def publish(self, content: Dict[str, Any]) -> Dict[str, Any]:
