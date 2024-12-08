@@ -9,15 +9,15 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
     
     - name: Set up Python
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v5
       with:
         python-version: '3.x'
     
     - name: Download previous tracking data
-      uses: actions/download-artifact@v2
+      uses: actions/download-artifact@v4
       continue-on-error: true
       with:
         name: tracking-data
@@ -45,8 +45,8 @@ jobs:
         python scripts/publish_posts.py
 
     - name: Upload tracking data
-      uses: actions/upload-artifact@v2
-      if: always()  # Upload even if the script fails
+      uses: actions/upload-artifact@v4
+      if: always()                        # Upload even if the script fails
       with:
         name: tracking-data
         path: .tracking/
