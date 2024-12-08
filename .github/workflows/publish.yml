@@ -18,66 +18,21 @@ jobs:
 
     - name: Setup project structure
       run: |
-        # Create all necessary directories
-        mkdir -p scripts/utils
-        mkdir -p scripts/config
-        mkdir -p posts
-        mkdir -p dist
-        mkdir -p logs
-        mkdir -p .tracking
+        # Create necessary directories
+        mkdir -p scripts/utils scripts/config posts dist logs .tracking
         
-        # Create __init__.py files
+        # Create package files
         touch scripts/__init__.py
         touch scripts/utils/__init__.py
         touch scripts/config/__init__.py
         
-        # Create empty tracking file
-        echo '{"last_run": "'$(date -u +"%Y-%m-%dT%H:%M:%SZ")'", "posts": {}}' > .tracking/published_posts.json
-        
-        # Set permissions
-        chmod -R 755 scripts
-        chmod -R 777 .tracking
-        chmod -R 777 logs
-        chmod -R 777 dist
-
-    - name: Create test post
-      run: |
-        cat > posts/test-post.md << 'EOF'
-        ---
-        title: Test Post
-        description: This is a test post
-        tags: test
-        ---
-
-        # Test Post
-
-        This is a test post to verify the publication system is working correctly.
-
-        ## Testing Features
-
-        - Markdown conversion
-        - Platform publishing
-        - Tracking system
-        EOF
+        # Initialize tracking file
+        echo '{"posts": {}}' > .tracking/published_posts.json
 
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt
-    
-    - name: Verify environment
-      run: |
-        echo "Python version:"
-        python --version
-        
-        echo -e "\nDirectory Structure:"
-        ls -R
-        
-        echo -e "\nTracking File Contents:"
-        cat .tracking/published_posts.json
-        
-        echo -e "\nInstalled Python Packages:"
-        pip list
 
     - name: Run publication script
       env:
@@ -87,79 +42,45 @@ jobs:
         HTML_OUTPUT_DIR: ./dist
         PYTHONPATH: ${{ github.workspace }}
       run: |
-        # Create wrapper script with error handling
+        # Create wrapper script
         cat > run_publisher.py << 'EOF'
         import sys
-        import traceback
         import logging
         from pathlib import Path
-        
-        # Set up logging
+
+        # Configure logging
         logging.basicConfig(
-            level=logging.DEBUG,
-            format='%(asctime)s - %(levelname)s - %(name)s - %(message)s',
+            level=logging.INFO,
+            format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
             handlers=[
-                logging.FileHandler('logs/debug.log'),
+                logging.FileHandler('logs/publish.log'),
                 logging.StreamHandler(sys.stdout)
             ]
         )
         
-        logger = logging.getLogger('publisher')
-        
         try:
-            logger.info("Starting publication process")
-            logger.info(f"Current working directory: {Path.cwd()}")
-            logger.info(f"Directory contents: {list(Path.cwd().glob('**/*.py'))}")
-            
-            # Import and run main script
             from scripts.publish_posts import main
             main()
-            
-        except ImportError as e:
-            logger.error(f"Import error: {str(e)}")
-            logger.error(f"Python path: {sys.path}")
-            logger.error(traceback.format_exc())
-            sys.exit(1)
         except Exception as e:
-            logger.error(f"Error in publication process: {str(e)}")
-            logger.error(traceback.format_exc())
+            logging.error(f"Publication failed: {str(e)}", exc_info=True)
             sys.exit(1)
         EOF
         
-        # Run the wrapper script
+        # Run the script
         python run_publisher.py
-        
-        # Show logs if script failed
-        if [ $? -ne 0 ]; then
-          echo "Script failed. Debug logs:"
-          cat logs/debug.log
-        fi
 
-    - name: Preserve tracking data
+    - name: Upload logs
       if: always()
-      run: |
-        if [ -d ".tracking" ]; then
-          cp -r .tracking tracking_backup
-        fi
-        
+      uses: actions/upload-artifact@v4
+      with:
+        name: publish-logs
+        path: logs/
+        retention-days: 7
+
     - name: Upload tracking data
       if: always()
       uses: actions/upload-artifact@v4
       with:
         name: tracking-data
-        path: tracking_backup/
+        path: .tracking/
         retention-days: 90
-        
-    - name: Upload debug logs
-      if: always()
-      uses: actions/upload-artifact@v4
-      with:
-        name: debug-logs
-        path: logs/
-        retention-days: 5
-
-    - name: Cleanup
-      if: always()
-      run: |
-        rm -rf tracking_backup
-        echo "Cleanup completed"
