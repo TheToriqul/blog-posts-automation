@@ -10,7 +10,6 @@ class MediumPublisher:
         self.token = token
         self.api_base = "https://api.medium.com/v1"
         self.logger = get_logger(__name__)
-        # Using the headers from our successful token test
         self.headers = {
             'Authorization': f'Bearer {self.token}',
             'Content-Type': 'application/json',
@@ -20,7 +19,6 @@ class MediumPublisher:
         self._user_id = None
     
     def _get_user_id(self) -> str:
-        """Get Medium user ID with verified configuration"""
         if self._user_id:
             return self._user_id
             
@@ -38,24 +36,20 @@ class MediumPublisher:
                 self.logger.info(f"Successfully got Medium user ID: {self._user_id}")
                 return self._user_id
             else:
-                self.logger.error(f"Failed to get user ID. Status: {response.status_code}")
-                self.logger.error(f"Response: {response.text}")
                 raise PublishError(f"Failed to get Medium user ID. Status: {response.status_code}", "medium")
                 
         except Exception as e:
             self.logger.error(f"Error getting Medium user ID: {str(e)}")
             raise
     
-    def _prepare_content(self, content: Dict[str, Any]) -> Dict[str, Any]:
-        """Prepare content for Medium API"""
-        # Format tags
+    def _prepare_content(self, content: Dict[str, Any], publish_status: str = 'public') -> Dict[str, Any]:
+        """Prepare content for Medium API with publication status"""
         tags = content['metadata'].get('tags', [])
         if isinstance(tags, str):
             tags = [tag.strip() for tag in tags.split(',')]
         elif not isinstance(tags, list):
             tags = []
             
-        # Ensure we have required fields
         title = content['metadata'].get('title', '').strip()
         html_content = content.get('content', '').strip()
         
@@ -68,25 +62,30 @@ class MediumPublisher:
             'title': title,
             'contentFormat': 'html',
             'content': html_content,
-            'tags': tags[:5],  # Medium allows max 5 tags
-            'publishStatus': 'publish_status',
-            'notifyFollowers': True
+            'tags': tags[:5],
+            'publishStatus': publish_status,  # 'public' for direct publishing
+            'notifyFollowers': True  # Enable notifications for published posts
         }
     
-    def publish(self, content: Dict[str, Any]) -> Dict[str, Any]:
-        """Publish content to Medium with verified configuration"""
+    def publish(self, content: Dict[str, Any], publish_status: str = 'public') -> Dict[str, Any]:
+        """
+        Publish content to Medium
+        
+        Args:
+            content (Dict[str, Any]): The content to publish
+            publish_status (str): 'public', 'draft', or 'unlisted'
+        """
         try:
-            # Get user ID first
             user_id = self._get_user_id()
             
-            # Prepare post data
             self.logger.info(f"Preparing post: {content['metadata'].get('title', 'Untitled')}")
-            post_data = self._prepare_content(content)
+            self.logger.info(f"Publication status: {publish_status}")
+            
+            post_data = self._prepare_content(content, publish_status)
             
             # Add a small delay to avoid rate limits
             time.sleep(1)
             
-            # Publish the post
             self.logger.info("Attempting to publish to Medium...")
             response = requests.post(
                 f"{self.api_base}/users/{user_id}/posts",
