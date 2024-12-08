@@ -1,0 +1,54 @@
+# .github/workflows/publish.yml
+name: Publish Blog Posts
+
+on:
+  push:
+    paths:
+      - 'posts/**'
+  workflow_dispatch:
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v2
+    
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.x'
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+    
+    - name: Create output directory
+      run: mkdir -p dist
+    
+    - name: Run publication script
+      env:
+        MEDIUM_TOKEN: ${{ secrets.MEDIUM_TOKEN }}
+        DEVTO_API_KEY: ${{ secrets.DEVTO_API_KEY }}
+        MARKDOWN_DIR: ./posts
+        HTML_OUTPUT_DIR: ./dist
+      run: |
+        python -c "
+        from scripts.convert_markdown import MarkdownConverter
+        from scripts.publish_medium import MediumPublisher
+        from scripts.publish_devto import DevToPublisher
+        from scripts.config.settings import Settings
+        
+        # Initialize components
+        Settings.validate_config()
+        converter = MarkdownConverter(Settings.MARKDOWN_DIR, Settings.OUTPUT_DIR)
+        medium_publisher = MediumPublisher(Settings.MEDIUM_TOKEN)
+        devto_publisher = DevToPublisher(Settings.DEVTO_API_KEY)
+        
+        # Process and publish
+        converted_posts = converter.convert()
+        for post in converted_posts:
+            medium_result = medium_publisher.publish(post)
+            devto_result = devto_publisher.publish(post)
+        "
