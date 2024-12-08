@@ -2,3 +2,4 @@ python-frontmatter==1.0.0
 markdown2==2.4.3
 requests==2.31.0
 python-dotenv==1.0.0
+beautifulsoup4
