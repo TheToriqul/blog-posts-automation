@@ -1,3 +1,4 @@
+import time
 import hashlib
 from pathlib import Path
 from convert_markdown import MarkdownConverter
@@ -58,6 +59,8 @@ def main():
                 logger.info(f"Successfully published to Medium: {medium_url}")
             except PublishError as e:
                 logger.error(f"Failed to publish to Medium: {str(e)}")
+            if "rate limited" in str(e).lower():
+                logger.warning("Medium rate limit reached, skipping Medium publication")
             
             # Try Dev.to publication
             try:
