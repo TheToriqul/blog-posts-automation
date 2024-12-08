@@ -1,4 +1,3 @@
-# scripts/convert_markdown.py
 from pathlib import Path
 import frontmatter
 import markdown2
@@ -15,6 +14,23 @@ class MarkdownConverter:
         self.output_dir = Path(output_dir)
         self.logger = get_logger(__name__)
         
+    def convert_single_file(self, file_path: Path) -> Dict[str, Any]:
+        """
+        Convert a single markdown file to HTML/JSON
+        
+        Args:
+            file_path: Path to the markdown file
+            
+        Returns:
+            Dict containing converted content and metadata
+        """
+        try:
+            self.logger.info(f"Converting single file: {file_path}")
+            return self._process_file(file_path)
+            
+        except Exception as e:
+            raise ConversionError(f"Error converting {file_path}: {str(e)}", str(file_path))
+    
     def _process_file(self, file_path: Path) -> Dict[str, Any]:
         """Process a single markdown file"""
         try:
@@ -22,7 +38,7 @@ class MarkdownConverter:
             validate_frontmatter(post.metadata)
             
             # Convert tags to list if string
-            if isinstance(post.metadata['tags'], str):
+            if isinstance(post.metadata.get('tags', ''), str):
                 post.metadata['tags'] = [tag.strip() for tag in post.metadata['tags'].split(',')]
             
             # Convert content to HTML
@@ -31,11 +47,19 @@ class MarkdownConverter:
                 extras=['fenced-code-blocks', 'tables', 'metadata']
             )
             
-            return {
+            # Create output structure
+            converted = {
                 'metadata': post.metadata,
                 'content': html_content,
                 'original_file': file_path.name
             }
+            
+            # Save to output directory
+            output_file = self.output_dir / f"{file_path.stem}.json"
+            with output_file.open('w') as f:
+                json.dump(converted, f, indent=2)
+            
+            return converted
             
         except Exception as e:
             raise ConversionError(f"Error converting {file_path}: {str(e)}", str(file_path))
@@ -49,17 +73,11 @@ class MarkdownConverter:
             try:
                 self.logger.info(f"Converting {md_file}")
                 converted = self._process_file(md_file)
-                
-                # Save to output directory
-                output_file = self.output_dir / f"{md_file.stem}.json"
-                with output_file.open('w') as f:
-                    json.dump(converted, f, indent=2)
-                
                 converted_posts.append(converted)
                 self.logger.info(f"Successfully converted {md_file}")
                 
             except ConversionError as e:
-                self.logger.error(f"Failed to convert {e.file_path}: {e.message}")
+                self.logger.error(f"Failed to convert {e.file_path}: {str(e)}")
                 continue
             
         return converted_posts
