@@ -19,9 +19,8 @@ jobs:
     - name: Initialize tracking directory
       run: |
         mkdir -p .tracking
-        if [ ! -f .tracking/published_posts.json ]; then
-          echo "{}" > .tracking/published_posts.json
-        fi
+        echo '{"last_run": "'$(date -u +"%Y-%m-%dT%H:%M:%SZ")'", "posts": {}}' > .tracking/published_posts.json
+        cat .tracking/published_posts.json
 
     - name: Download previous tracking data
       uses: actions/download-artifact@v4
@@ -32,9 +31,11 @@ jobs:
         
     - name: Verify tracking file
       run: |
-        if [ ! -f .tracking/published_posts.json ]; then
-          echo "{}" > .tracking/published_posts.json
+        if [ ! -f .tracking/published_posts.json ] || [ ! -s .tracking/published_posts.json ]; then
+          echo '{"last_run": "'$(date -u +"%Y-%m-%dT%H:%M:%SZ")'", "posts": {}}' > .tracking/published_posts.json
         fi
+        echo "Current tracking file contents:"
+        cat .tracking/published_posts.json
 
     - name: Install dependencies
       run: |
@@ -42,11 +43,14 @@ jobs:
         pip install -r requirements.txt
     
     - name: Create output directory
-      run: mkdir -p dist
+      run: |
+        mkdir -p dist
+        echo "Created dist directory at $(pwd)/dist"
     
     - name: Add scripts to Python path
       run: |
         echo "PYTHONPATH=$PYTHONPATH:$PWD" >> $GITHUB_ENV
+        echo "Current PYTHONPATH: $PYTHONPATH:$PWD"
     
     - name: Run publication script
       env:
@@ -55,12 +59,14 @@ jobs:
         MARKDOWN_DIR: ./posts
         HTML_OUTPUT_DIR: ./dist
       run: |
+        ls -la .tracking/
+        echo "Running publication script..."
         python scripts/publish_posts.py
 
     - name: Upload tracking data
       uses: actions/upload-artifact@v4
-      if: always()  # Upload even if the script fails
+      if: always()
       with:
         name: tracking-data
         path: .tracking/
-        retention-days: 90  # Keep tracking data for 90 days
+        retention-days: 90
