@@ -82,7 +82,16 @@ jobs:
         DEVTO_API_KEY: ${{ secrets.DEVTO_API_KEY }}
         MARKDOWN_DIR: ./posts
         HTML_OUTPUT_DIR: ./dist
-      run: python scripts/publish_posts.py
+        PYTHONPATH: ${{ github.workspace }}
+      run: |
+        # Create __init__.py files to make directories into Python packages
+        touch __init__.py
+        touch scripts/__init__.py
+        touch scripts/utils/__init__.py
+        touch scripts/config/__init__.py
+        
+        # Run the script
+        python scripts/publish_posts.py
     
     - name: Commit tracking data
       run: |
