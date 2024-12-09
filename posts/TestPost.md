@@ -1,19 +1,14 @@
-mkdir -p posts
-cat > posts/test-post.md << 'EOF'
 ---
-title: Test Post
-description: This is a test post
-tags: test
+title: "Test Post Title"
+description: "A test post for the blog automation system"
+tags: test,automation
 ---
 
-# Test Post
-
-This is a test post to verify the publication system is working correctly.
+This is a test post to verify the blog automation system.
 
 ## Testing Features
 
 - Markdown conversion
-- Platform publishing
-- Tracking system
-
-EOF
+- Medium publishing
+- Dev.to publishing
+- Proper frontmatter handling

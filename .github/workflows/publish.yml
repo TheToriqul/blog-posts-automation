@@ -32,14 +32,18 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
     
-    - name: Create Python package structure
+    - name: Create directory structure
       run: |
-        # Create __init__.py files
+        # Create Python package directories
+        mkdir -p scripts/utils scripts/config dist .tracking
         touch __init__.py
         touch scripts/__init__.py
-        mkdir -p scripts/utils scripts/config
         touch scripts/utils/__init__.py
         touch scripts/config/__init__.py
+        
+        # Initialize tracking files if they don't exist
+        [ ! -f ".tracking/published_posts.json" ] && echo "{}" > .tracking/published_posts.json
+        [ ! -f ".queue/post_queue.json" ] && mkdir -p .queue && echo "{}" > .queue/post_queue.json
     
     - name: Run publication script
       env:
@@ -54,7 +58,7 @@ jobs:
       run: |
         git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
         git config --local user.name "github-actions[bot]"
-        git add .tracking/published_posts.json
+        git add .tracking/published_posts.json .queue/post_queue.json
         git diff --quiet && git diff --staged --quiet || git commit -m "Update published posts tracking data [skip ci]"
         git push origin HEAD:${GITHUB_REF}
       env:
