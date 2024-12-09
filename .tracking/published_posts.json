@@ -14,6 +14,21 @@
       }
     }
   },
+  "blog-test-post.md": {
+    "first_published_at": "2024-12-09T13:12:26.022411",
+    "platforms": {
+      "devto": {
+        "platform_id": 2147719,
+        "published_at": "2024-12-09T13:12:26.505487",
+        "url": "https://dev.to/thetoriqul/getting-started-with-blog-automation-a-test-post-57f7"
+      },
+      "medium": {
+        "platform_id": "bd3760fb125a",
+        "published_at": "2024-12-09T13:12:26.022422",
+        "url": "https://medium.com/@TheToriqul/getting-started-with-blog-automation-a-test-post-bd3760fb125a"
+      }
+    }
+  },
   "example-post.md": {
     "first_published_at": "2024-12-09T13:02:05.582189",
     "platforms": {
