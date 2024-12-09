@@ -17,6 +17,11 @@
   "example-post.md": {
     "first_published_at": "2024-12-09T13:02:05.582189",
     "platforms": {
+      "devto": {
+        "platform_id": 2147702,
+        "published_at": "2024-12-09T13:03:32.996906",
+        "url": "https://dev.to/thetoriqul/example-post-5a78"
+      },
       "medium": {
         "platform_id": "318cb8feed2b",
         "published_at": "2024-12-09T13:02:05.582200",
