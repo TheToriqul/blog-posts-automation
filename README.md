@@ -38,42 +38,14 @@ It's that simple! Get started in under a minute.
 - 💪 **24/7 Reliability** with automated recovery
 
 ## 🏗️ Architectural Excellence
+This blog automation system enables developers to write content once in Markdown and automatically publish it across multiple platforms (Medium and Dev.to) while maintaining content integrity through robust tracking and caching mechanisms. The architecture follows a streamlined flow: content management handles the posts and tracking, processing converts and formats the content appropriately, monitoring ensures reliability through error handling and retries, and finally, the publishing layer manages rate-limiting and platform-specific distributions.
 
-```mermaid
-graph TB
-    subgraph Content["Content Management Layer"]
-        A[Markdown Posts] --> B[Post Tracker]
-        B --> C[Caching System]
-        C --> D[Duplication Prevention]
-    end
-    
-    subgraph Processing["Intelligent Processing Layer"]
-        D --> E[Markdown Converter]
-        E --> F[HTML Generator]
-        F --> G[Platform-Specific Formatter]
-        G --> H[Image Processor]
-    end
-    
-    subgraph Publishing["Smart Publishing Layer"]
-        H --> I[Rate Limiter]
-        I --> J[Medium Publisher]
-        I --> K[Dev.to Publisher]
-        J & K --> L[Publication Tracker]
-    end
-    
-    subgraph Monitoring["Monitoring & Recovery"]
-        L --> M[Success Logger]
-        L --> N[Error Handler]
-        N --> O[Retry Mechanism]
-        O --> I
-    end
-    
-    subgraph Automation["CI/CD Pipeline"]
-        P[GitHub Actions] --> A
-        P --> Q[Automated Publishing]
-        Q --> I
-    end
-```
+<figure >
+  <p align="center">
+      <img src="./architecture.png" alt="project architecture" />
+      <p align="center">Project Architecture</p> 
+  </p>
+</figure>
 
 ## 🎯 Core Features
 
@@ -120,47 +92,6 @@ graph TB
 | Community Support | None | Varies | Active Community |
 | Integration | Manual | Limited | Extensive |
 
-## 📁 Advanced Project Structure
-
-```
-blog-automation/
-├── .github/
-│   └── workflows/
-│       └── publish.yml          # GitHub Actions workflow
-├── scripts/
-│   ├── __init__.py
-│   ├── convert_markdown.py      # Markdown processor
-│   ├── publish_medium.py        # Medium integration
-│   ├── publish_devto.py         # Dev.to integration
-│   ├── utils/
-│   │   ├── __init__.py
-│   │   ├── logger.py           # Advanced logging
-│   │   ├── exceptions.py       # Custom exceptions
-│   │   └── validators.py       # Content validation
-│   ├── tracking/
-│   │   ├── __init__.py
-│   │   ├── post_tracker.py     # Publication tracking
-│   │   └── cache_manager.py    # Cache management
-│   └── config/
-│       ├── __init__.py
-│       └── settings.py         # Configuration
-├── posts/                      # Content directory
-│   ├── drafts/
-│   ├── published/
-│   └── images/
-├── dist/                       # Processed output
-├── tests/                      # Test suite
-│   ├── __init__.py
-│   ├── test_converter.py
-│   ├── test_publishers.py
-│   ├── test_tracking.py
-│   └── fixtures/
-├── requirements.txt
-├── requirements-dev.txt
-├── .env.example
-├── .gitignore
-└── README.md
-```
 
 ## 🚀 Getting Started
 
