@@ -33,17 +33,39 @@ jobs:
         pip install -r requirements.txt
     
     - name: Create directory structure
+      shell: bash
       run: |
-        # Create Python package directories
-        mkdir -p scripts/utils scripts/config dist .tracking
+        # Create all required directories
+        mkdir -p scripts/utils
+        mkdir -p scripts/config
+        mkdir -p dist
+        mkdir -p .tracking
+        mkdir -p .queue
+        
+        # Create __init__.py files
         touch __init__.py
         touch scripts/__init__.py
         touch scripts/utils/__init__.py
         touch scripts/config/__init__.py
         
-        # Initialize tracking files if they don't exist
-        [ ! -f ".tracking/published_posts.json" ] && echo "{}" > .tracking/published_posts.json
-        [ ! -f ".queue/post_queue.json" ] && mkdir -p .queue && echo "{}" > .queue/post_queue.json
+        # Initialize JSON files if they don't exist
+        if [ ! -f ".tracking/published_posts.json" ]; then
+          echo "{}" > .tracking/published_posts.json
+        fi
+        
+        if [ ! -f ".queue/post_queue.json" ]; then
+          echo "{}" > .queue/post_queue.json
+        fi
+        
+        # Set permissions
+        chmod -R 755 scripts
+        chmod -R 755 dist
+        chmod -R 755 .tracking
+        chmod -R 755 .queue
+        
+        # List directory structure for verification
+        echo "Directory structure:"
+        ls -R
     
     - name: Run publication script
       env:
@@ -58,8 +80,7 @@ jobs:
       run: |
         git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
         git config --local user.name "github-actions[bot]"
-        git add .tracking/published_posts.json .queue/post_queue.json
-        git diff --quiet && git diff --staged --quiet || git commit -m "Update published posts tracking data [skip ci]"
-        git push origin HEAD:${GITHUB_REF}
+        git add .tracking/published_posts.json .queue/post_queue.json || true
+        git diff --quiet && git diff --staged --quiet || (git commit -m "Update published posts tracking data [skip ci]" && git push origin HEAD:${GITHUB_REF})
       env:
         GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
