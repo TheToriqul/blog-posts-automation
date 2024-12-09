@@ -12,4 +12,4 @@ This is a test post to verify the blog automation system.
 - Medium publishing
 - Dev.to publishing
 - Proper frontmatter handling
-- Check
+- Check for correction
