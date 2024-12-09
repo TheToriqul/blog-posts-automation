@@ -1,1 +1,42 @@
-{}
+{
+  "TestPost.md": {
+    "first_published_at": "2024-12-09T13:02:04.343843",
+    "platforms": {
+      "devto": {
+        "platform_id": 2147701,
+        "published_at": "2024-12-09T13:02:04.744672",
+        "url": "https://dev.to/thetoriqul/test-post-title-14f1"
+      },
+      "medium": {
+        "platform_id": "4c024853171e",
+        "published_at": "2024-12-09T13:02:04.343854",
+        "url": "https://medium.com/@TheToriqul/test-post-title-4c024853171e"
+      }
+    }
+  },
+  "example-post.md": {
+    "first_published_at": "2024-12-09T13:02:05.582189",
+    "platforms": {
+      "medium": {
+        "platform_id": "318cb8feed2b",
+        "published_at": "2024-12-09T13:02:05.582200",
+        "url": "https://medium.com/@TheToriqul/example-post-318cb8feed2b"
+      }
+    }
+  },
+  "wbgt-alert-system.md": {
+    "first_published_at": "2024-12-09T13:02:02.898293",
+    "platforms": {
+      "devto": {
+        "platform_id": 2147700,
+        "published_at": "2024-12-09T13:02:03.471300",
+        "url": "https://dev.to/thetoriqul/building-an-automated-heat-stress-monitoring-system-with-microsoft-power-platform-and-telegram-1mee"
+      },
+      "medium": {
+        "platform_id": "8fb823600950",
+        "published_at": "2024-12-09T13:02:02.898303",
+        "url": "https://medium.com/@TheToriqul/building-an-automated-heat-stress-monitoring-system-with-microsoft-power-platform-and-telegram-8fb823600950"
+      }
+    }
+  }
+}
