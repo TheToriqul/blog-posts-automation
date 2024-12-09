@@ -1,13 +1,14 @@
 from pathlib import Path
 import time
 from datetime import datetime
-from .convert_markdown import MarkdownConverter
-from .publish_medium import MediumPublisher
-from .publish_devto import DevToPublisher
-from .post_tracker import PostTracker
-from .config.settings import Settings
-from .utils.logger import get_logger
-from .utils.exceptions import PublishError
+from scripts.convert_markdown import MarkdownConverter
+from scripts.publish_medium import MediumPublisher
+from scripts.publish_devto import DevToPublisher
+from scripts.post_tracker import PostTracker
+from scripts.queue_manager import PostQueue
+from scripts.config.settings import Settings
+from scripts.utils.logger import get_logger
+from scripts.utils.exceptions import PublishError
 
 def main():
     logger = get_logger(__name__)
@@ -17,6 +18,7 @@ def main():
         logger.info(f"Project root directory: {project_root}")
         
         tracker = PostTracker(base_dir=project_root)
+        queue = PostQueue(base_dir=project_root)
         converter = MarkdownConverter(Settings.MARKDOWN_DIR, Settings.OUTPUT_DIR)
         medium_publisher = MediumPublisher(Settings.MEDIUM_TOKEN)
         devto_publisher = DevToPublisher(Settings.DEVTO_API_KEY)
@@ -32,56 +34,52 @@ def main():
         logger.info(f"Found {len(needs_publishing['medium'])} posts for Medium")
         logger.info(f"Found {len(needs_publishing['devto'])} posts for Dev.to")
 
-        # Process Medium posts
-        for file_path in needs_publishing['medium']:
+        # Process ready posts
+        ready_posts = queue.get_ready_posts()
+        for post in ready_posts:
+            file_path = post['file_path']
+            full_path = markdown_dir / file_path
+            
             try:
-                full_path = markdown_dir / file_path
-                post = converter.convert_single_file(full_path)
+                converted_post = converter.convert_single_file(full_path)
                 
-                try:
-                    medium_result = medium_publisher.publish(post)
-                    medium_url = medium_result.get('data', {}).get('url')
-                    medium_id = medium_result.get('data', {}).get('id')
-                    
-                    if medium_url:
-                        tracker.mark_platform_published(
-                            file_path, 'medium', medium_url, medium_id
-                        )
-                        logger.info(f"Successfully published to Medium: {medium_url}")
-                        time.sleep(5)  # Wait between posts
-                except PublishError as e:
-                    logger.error(f"Failed to publish to Medium: {str(e)}")
-                    if "rate limit" in str(e).lower():
-                        break
+                # Publish to each platform
+                if 'medium' in post['platforms']:
+                    try:
+                        medium_result = medium_publisher.publish(converted_post)
+                        medium_url = medium_result.get('data', {}).get('url')
+                        medium_id = medium_result.get('data', {}).get('id')
+                        
+                        if medium_url:
+                            tracker.mark_platform_published(
+                                file_path, 'medium', medium_url, medium_id
+                            )
+                            queue.mark_completed(file_path, 'medium')
+                            logger.info(f"Successfully published to Medium: {medium_url}")
+                    except PublishError as e:
+                        logger.error(f"Failed to publish to Medium: {str(e)}")
+                
+                if 'devto' in post['platforms']:
+                    try:
+                        devto_result = devto_publisher.publish(converted_post)
+                        devto_url = devto_result.get('url')
+                        devto_id = devto_result.get('id')
+                        
+                        if devto_url:
+                            tracker.mark_platform_published(
+                                file_path, 'devto', devto_url, devto_id
+                            )
+                            queue.mark_completed(file_path, 'devto')
+                            logger.info(f"Successfully published to Dev.to: {devto_url}")
+                    except PublishError as e:
+                        logger.error(f"Failed to publish to Dev.to: {str(e)}")
+                
             except Exception as e:
-                logger.error(f"Error processing {file_path} for Medium: {str(e)}")
+                logger.error(f"Error processing {file_path}: {str(e)}")
                 continue
 
-        # Process Dev.to posts
-        for file_path in needs_publishing['devto']:
-            try:
-                full_path = markdown_dir / file_path
-                post = converter.convert_single_file(full_path)
-                
-                try:
-                    devto_result = devto_publisher.publish(post)
-                    devto_url = devto_result.get('url')
-                    devto_id = devto_result.get('id')
-                    
-                    if devto_url:
-                        tracker.mark_platform_published(
-                            file_path, 'devto', devto_url, devto_id
-                        )
-                        logger.info(f"Successfully published to Dev.to: {devto_url}")
-                        time.sleep(60)  # Wait between posts
-                except PublishError as e:
-                    logger.error(f"Failed to publish to Dev.to: {str(e)}")
-                    if "rate limit" in str(e).lower() or "retry later" in str(e).lower():
-                        break
-            except Exception as e:
-                logger.error(f"Error processing {file_path} for Dev.to: {str(e)}")
-                continue
-
+        # Clean old completed posts
+        queue.clean_completed(days_old=7)
         logger.info("Publication process completed")
 
     except Exception as e:
