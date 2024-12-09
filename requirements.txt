@@ -3,11 +3,7 @@ python-dotenv>=0.19.0
 requests>=2.26.0
 python-frontmatter>=1.0.0
 markdown2>=2.4.0
-beautifulsoup4
-
-# Publishing platforms
-medium-sdk>=0.3.0
-python-dev-to>=0.3.0
+beautifulsoup4>=4.9.0
 
 # Image processing
 Pillow>=9.0.0
@@ -16,9 +12,15 @@ Pillow>=9.0.0
 pytest>=7.0.0
 pytest-cov>=3.0.0
 pytest-mock>=3.6.1
-responses>=0.13.0  # For mocking HTTP requests in tests
-freezegun>=1.1.0   # For datetime mocking in tests
+responses>=0.13.0
+freezegun>=1.1.0
 
 # Utilities
 python-dateutil>=2.8.2
-typing-extensions>=4.0.0  # For Python <3.8 compatibility
+typing-extensions>=4.0.0
+
+# HTTP
+urllib3>=2.0.0
+certifi>=2021.10.8
+charset-normalizer>=2.0.0
+idna>=3.3
