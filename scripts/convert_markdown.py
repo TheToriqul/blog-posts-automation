@@ -3,6 +3,8 @@ import frontmatter
 import markdown2
 import json
 from typing import Dict, Any, List
+from datetime import datetime, timezone
+import os
 from .utils.logger import get_logger
 from .utils.exceptions import ConversionError
 
@@ -128,7 +130,7 @@ class MarkdownConverter:
                 },
                 'content': html_content,
                 'original_file': file_path.name,
-                'converted_at': datetime.now().isoformat()
+                'converted_at': datetime.now(timezone.utc).isoformat()
             }
             
             # Save to output directory
