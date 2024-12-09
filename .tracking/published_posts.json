@@ -29,6 +29,16 @@
       }
     }
   },
+  "cross-platform-blog-automation.md": {
+    "first_published_at": "2024-12-09T14:36:22.210236",
+    "platforms": {
+      "medium": {
+        "platform_id": "42e4470bec74",
+        "published_at": "2024-12-09T14:36:22.210247",
+        "url": "https://medium.com/@TheToriqul/cross-platform-blog-publishing-automation-write-once-publish-everywhere-42e4470bec74"
+      }
+    }
+  },
   "example-post.md": {
     "first_published_at": "2024-12-09T13:02:05.582189",
     "platforms": {
