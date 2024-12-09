@@ -11,13 +11,19 @@ class PostTracker:
     def __init__(self, base_dir: Optional[str] = None):
         """Initialize the post tracker"""
         self.base_dir = Path(base_dir) if base_dir else Path.cwd()
+        # Store tracking data in repository instead of runner storage
         self.tracking_dir = self.base_dir / '.tracking'
         self.tracking_file = self.tracking_dir / 'published_posts.json'
         self.logger = get_logger(__name__)
         self.published_posts: Dict[str, Dict] = {}
         
-        # Ensure tracking directory exists
+        # Create tracking directory if it doesn't exist
         self.tracking_dir.mkdir(exist_ok=True)
+        
+        # Initialize tracking file if it doesn't exist
+        if not self.tracking_file.exists():
+            self._save_tracking_data()
+            
         self._load_tracking_data()
     
     def _load_tracking_data(self):
@@ -29,7 +35,11 @@ class PostTracker:
                     if isinstance(data, dict):
                         self.published_posts = data
                         self.logger.info(f"Loaded tracking data for {len(data)} posts")
+                    else:
+                        self.logger.warning("Invalid tracking data format, initializing empty tracking")
+                        self.published_posts = {}
             else:
+                self.logger.info("No existing tracking data found, initializing empty tracking")
                 self._save_tracking_data()
                 
         except Exception as e:
@@ -38,12 +48,19 @@ class PostTracker:
             self._save_tracking_data()
     
     def _save_tracking_data(self):
-        """Save tracking data to file"""
+        """Save tracking data to repository"""
         try:
+            # Ensure tracking directory exists
+            self.tracking_dir.mkdir(exist_ok=True)
+            
+            # Save with pretty printing for better readability in git
             with self.tracking_file.open('w') as f:
-                json.dump(self.published_posts, f, indent=2)
+                json.dump(self.published_posts, f, indent=2, sort_keys=True)
+                
+            self.logger.info(f"Saved tracking data to {self.tracking_file}")
         except Exception as e:
             self.logger.error(f"Error saving tracking data: {e}")
+            raise TrackingError(f"Failed to save tracking data: {str(e)}")
     
     def check_platform_status(self, file_path: str) -> Tuple[bool, bool]:
         """Check if a post is published on Medium and Dev.to"""

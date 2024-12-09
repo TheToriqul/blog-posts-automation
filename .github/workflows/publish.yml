@@ -1,86 +1,93 @@
 name: Publish Blog Posts
 
 on:
+  # Path-based trigger
   push:
+    paths:
+      - 'posts/*.md'
+      - 'posts/images/**'
+  
+  # Strategic posting times (UTC)
+  schedule:
+    # Tuesday and Thursday at 13:00 UTC (optimal for US/Europe overlap)
+    - cron: '0 13 * * 2,4'
+    # Saturday at 15:00 UTC (weekend readership peak)
+    - cron: '0 15 * * 6'
+    
   workflow_dispatch:
 
 jobs:
-  publish:
+  check-and-publish:
     runs-on: ubuntu-latest
     
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
     
     - name: Set up Python
-      uses: actions/setup-python@v5
+      uses: actions/setup-python@v2
       with:
         python-version: '3.x'
-
-    - name: Setup project structure
-      run: |
-        # Create necessary directories
-        mkdir -p scripts/utils scripts/config posts dist logs .tracking
-        
-        # Create package files
-        touch scripts/__init__.py
-        touch scripts/utils/__init__.py
-        touch scripts/config/__init__.py
-        
-        # Initialize tracking file
-        echo '{"posts": {}}' > .tracking/published_posts.json
-
+    
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt
-
+    
+    - name: Check post timing
+      id: timing-check
+      run: |
+        if [[ "${{ github.event_name }}" == "schedule" ]]; then
+          echo "Proceeding with scheduled post"
+          echo "PUBLISH_DELAY=0" >> $GITHUB_ENV
+        else
+          # Calculate delay to next optimal posting time
+          HOUR_UTC=$(date -u +%H)
+          DOW=$(date -u +%u)  # 1-7 (Monday-Sunday)
+          
+          if [[ $DOW == "2" || $DOW == "4" ]] && [[ $HOUR_UTC -lt 13 ]]; then
+            # Wait until 13:00 UTC on Tuesday/Thursday
+            DELAY=$(( (13 - HOUR_UTC) * 3600 ))
+          elif [[ $DOW == "6" ]] && [[ $HOUR_UTC -lt 15 ]]; then
+            # Wait until 15:00 UTC on Saturday
+            DELAY=$(( (15 - HOUR_UTC) * 3600 ))
+          else
+            # Wait for next optimal time slot
+            echo "Queuing for next optimal posting time"
+            DELAY=3600  # Default 1-hour delay if outside optimal windows
+          fi
+          
+          echo "PUBLISH_DELAY=$DELAY" >> $GITHUB_ENV
+        fi
+    
+    - name: Wait for optimal posting time
+      if: github.event_name == 'push'
+      run: |
+        echo "Waiting for $PUBLISH_DELAY seconds to reach optimal posting time..."
+        sleep $PUBLISH_DELAY
+    
+    - name: Download tracking data
+      run: |
+        mkdir -p .tracking
+        if [ -f ".tracking/published_posts.json" ]; then
+          echo "Using existing tracking data"
+        else
+          echo "{}" > .tracking/published_posts.json
+        fi
+    
     - name: Run publication script
       env:
         MEDIUM_TOKEN: ${{ secrets.MEDIUM_TOKEN }}
         DEVTO_API_KEY: ${{ secrets.DEVTO_API_KEY }}
         MARKDOWN_DIR: ./posts
         HTML_OUTPUT_DIR: ./dist
-        PYTHONPATH: ${{ github.workspace }}
+      run: python scripts/publish_posts.py
+    
+    - name: Commit tracking data
       run: |
-        # Create wrapper script
-        cat > run_publisher.py << 'EOF'
-        import sys
-        import logging
-        from pathlib import Path
-
-        # Configure logging
-        logging.basicConfig(
-            level=logging.INFO,
-            format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-            handlers=[
-                logging.FileHandler('logs/publish.log'),
-                logging.StreamHandler(sys.stdout)
-            ]
-        )
-        
-        try:
-            from scripts.publish_posts import main
-            main()
-        except Exception as e:
-            logging.error(f"Publication failed: {str(e)}", exc_info=True)
-            sys.exit(1)
-        EOF
-        
-        # Run the script
-        python run_publisher.py
-
-    - name: Upload logs
-      if: always()
-      uses: actions/upload-artifact@v4
-      with:
-        name: publish-logs
-        path: logs/
-        retention-days: 7
-
-    - name: Upload tracking data
-      if: always()
-      uses: actions/upload-artifact@v4
-      with:
-        name: tracking-data
-        path: .tracking/
-        retention-days: 90
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add .tracking/published_posts.json
+        git diff --quiet && git diff --staged --quiet || git commit -m "Update published posts tracking data [skip ci]"
+        git push

@@ -38,3 +38,9 @@ class NetworkError(PublishError):
     def __init__(self, platform: str, status_code: int = None):
         self.status_code = status_code
         super().__init__(f"Network error for {platform}", platform)
+
+class QueueError(Exception):
+    """Raised when queue operations fail"""
+    def __init__(self, message: str, operation: str = None):
+        self.operation = operation
+        super().__init__(message)
