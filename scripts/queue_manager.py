@@ -174,3 +174,21 @@ class PostQueue:
                 status['queued'].append(queue_item)
         
         return status
+    
+    def clean_completed(self, days_old: int = 7):
+        """Remove completed posts older than specified days"""
+        now = datetime.now(timezone.utc)
+        to_remove = []
+        
+        for file_path, data in self.queued_posts.items():
+            if data.get('status') == 'completed':
+                completed_at = datetime.fromisoformat(data['completed_at'])
+                if (now - completed_at).days > days_old:
+                    to_remove.append(file_path)
+        
+        for file_path in to_remove:
+            del self.queued_posts[file_path]
+            
+        if to_remove:
+            self._save_queue_data()
+            self.logger.info(f"Cleaned {len(to_remove)} completed posts from queue")
