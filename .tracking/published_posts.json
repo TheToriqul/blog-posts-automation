@@ -32,6 +32,11 @@
   "cross-platform-blog-automation.md": {
     "first_published_at": "2024-12-09T14:36:22.210236",
     "platforms": {
+      "devto": {
+        "platform_id": 2149923,
+        "published_at": "2024-12-10T14:10:40.389638",
+        "url": "https://dev.to/thetoriqul/cross-platform-blog-publishing-automation-write-once-publish-everywhere-17dd"
+      },
       "medium": {
         "platform_id": "42e4470bec74",
         "published_at": "2024-12-09T14:36:22.210247",
