@@ -1,17 +1,19 @@
-name: Publish Blog Posts
+name: Blog Post Management
 
 on:
+  # Push trigger only queues posts
   push:
     paths:
       - 'posts/*.md'
       - 'posts/images/**'
+  # Schedule trigger publishes queued posts
   schedule:
-    - cron: '0 13 * * 2,4'
-    - cron: '0 15 * * 6'
+    - cron: '0 13 * * 2,4'  # 13:00 UTC Tuesday/Thursday
+    - cron: '0 15 * * 6'    # 15:00 UTC Saturday
   workflow_dispatch:
 
 jobs:
-  check-and-publish:
+  manage-posts:
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -35,20 +37,16 @@ jobs:
     - name: Create directory structure
       shell: bash
       run: |
-        # Create all required directories
         mkdir -p scripts/utils
         mkdir -p scripts/config
         mkdir -p dist
         mkdir -p .tracking
         mkdir -p .queue
         
-        # Create __init__.py files
-        touch __init__.py
         touch scripts/__init__.py
         touch scripts/utils/__init__.py
         touch scripts/config/__init__.py
         
-        # Initialize JSON files if they don't exist
         if [ ! -f ".tracking/published_posts.json" ]; then
           echo "{}" > .tracking/published_posts.json
         fi
@@ -57,24 +55,34 @@ jobs:
           echo "{}" > .queue/post_queue.json
         fi
         
-        # Set permissions
         chmod -R 755 scripts
         chmod -R 755 dist
         chmod -R 755 .tracking
         chmod -R 755 .queue
-        
-        # List directory structure for verification
-        echo "Directory structure:"
-        ls -R
     
-    - name: Run publication script
+    - name: Determine action type
+      id: action-type
+      run: |
+        if [[ "${{ github.event_name }}" == "push" ]]; then
+          echo "action=queue" >> $GITHUB_OUTPUT
+        else
+          echo "action=publish" >> $GITHUB_OUTPUT
+        fi
+
+    - name: Run appropriate script
       env:
         MEDIUM_TOKEN: ${{ secrets.MEDIUM_TOKEN }}
         DEVTO_API_KEY: ${{ secrets.DEVTO_API_KEY }}
         MARKDOWN_DIR: ./posts
         HTML_OUTPUT_DIR: ./dist
-        PYTHONPATH: ${{ github.workspace }}
-      run: python scripts/publish_posts.py
+        ACTION_TYPE: ${{ steps.action-type.outputs.action }}
+        PYTHONPATH: ${{ github.workspace }}/scripts:${{ github.workspace }}
+      run: |
+        if [[ "$ACTION_TYPE" == "queue" ]]; then
+          python scripts/queue_posts.py
+        else
+          python scripts/publish_posts.py
+        fi
     
     - name: Commit tracking data
       run: |
@@ -88,6 +96,7 @@ jobs:
         git add scripts/publish_medium.py
         git add scripts/publish_posts.py
         git add scripts/queue_manager.py
+        git add scripts/queue_posts.py
         git add scripts/test.py
         git add .tracking/published_posts.json
         git add .queue/post_queue.json

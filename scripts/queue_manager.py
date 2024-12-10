@@ -1,6 +1,6 @@
 from pathlib import Path
 from typing import Dict, List, Optional
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 import json
 from .utils.logger import get_logger
 from .utils.exceptions import QueueError
@@ -60,20 +60,65 @@ class PostQueue:
         except Exception as e:
             self.logger.error(f"Error saving queue data: {e}")
             raise QueueError(f"Failed to save queue data: {str(e)}")
+
+    def _get_next_schedule_time(self, schedule_times: List[Dict]) -> str:
+        """
+        Calculate the next available schedule time
+        """
+        now = datetime.now(timezone.utc)
+        next_time = None
+        
+        for schedule in schedule_times:
+            for day in schedule['days']:
+                # Get next occurrence of this day
+                next_date = now
+                while next_date.weekday() != day:
+                    next_date += timedelta(days=1)
+                
+                # Set the scheduled hour
+                next_date = next_date.replace(
+                    hour=schedule['hour'],
+                    minute=0,
+                    second=0,
+                    microsecond=0
+                )
+                
+                # If this time is in the past, move to next week
+                if next_date <= now:
+                    next_date += timedelta(days=7)
+                
+                # Update if this is sooner than current next_time
+                if next_time is None or next_date < next_time:
+                    next_time = next_date
+        
+        return next_time.isoformat()
     
     def add_to_queue(self, file_path: str, platforms: List[str], scheduled_time: Optional[str] = None):
-        """Add a post to the publication queue"""
+        """
+        Add a post to the queue with the next scheduled publish time
+        """
         now = datetime.now(timezone.utc)
+        
+        # If no specific time provided, set to next available schedule
+        if not scheduled_time:
+            # Define schedule times (13:00 UTC Tue/Thu, 15:00 UTC Sat)
+            schedule_times = [
+                {'hour': 13, 'days': [1, 3]},  # Tuesday, Thursday
+                {'hour': 15, 'days': [5]}      # Saturday
+            ]
+            
+            # Find next scheduled time
+            scheduled_time = self._get_next_schedule_time(schedule_times)
         
         self.queued_posts[file_path] = {
             'added_at': now.isoformat(),
-            'scheduled_time': scheduled_time or now.isoformat(),
+            'scheduled_time': scheduled_time,
             'platforms': platforms,
             'status': 'queued'
         }
         
         self._save_queue_data()
-        self.logger.info(f"Added {file_path} to queue for platforms: {platforms}")
+        self.logger.info(f"Added {file_path} to queue for platforms: {platforms}, scheduled for {scheduled_time}")
     
     def get_ready_posts(self) -> List[Dict]:
         """Get posts that are ready to be published"""
@@ -129,21 +174,3 @@ class PostQueue:
                 status['queued'].append(queue_item)
         
         return status
-    
-    def clean_completed(self, days_old: int = 7):
-        """Remove completed posts older than specified days"""
-        now = datetime.now(timezone.utc)
-        to_remove = []
-        
-        for file_path, data in self.queued_posts.items():
-            if data['status'] == 'completed':
-                completed_at = datetime.fromisoformat(data['completed_at'])
-                if (now - completed_at).days > days_old:
-                    to_remove.append(file_path)
-        
-        for file_path in to_remove:
-            del self.queued_posts[file_path]
-            
-        if to_remove:
-            self._save_queue_data()
-            self.logger.info(f"Cleaned {len(to_remove)} completed posts from queue")

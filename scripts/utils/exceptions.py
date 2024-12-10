@@ -41,6 +41,4 @@ class NetworkError(PublishError):
 
 class QueueError(Exception):
     """Raised when queue operations fail"""
-    def __init__(self, message: str, operation: str = None):
-        self.operation = operation
-        super().__init__(message)
+    pass
