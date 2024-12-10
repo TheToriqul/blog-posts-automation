@@ -1,7 +1,7 @@
 ---
 title: "Cross-Platform Blog Publishing Automation: Write Once, Publish Everywhere"
 description: "Discover how the Cross-Platform Blog Automation project revolutionizes content publishing workflow for developers, technical writers, and creators. Write in Markdown, commit, and let the automation handle publishing to Medium, Dev.to, and more - effortlessly."
-tags: blog automation, cross-platform publishing, content distribution, markdown, developer workflow
+tags: blog automation, crossPlatform publishing, content distribution, markdown, developer workflow
 canonical_url: https://thetoriqul.com/blog/cross-platform-blog-automation
 ---
 # 🚀 Revolutionizing Blog Publishing: Write Once, Distribute Everywhere! 🌐
