@@ -78,9 +78,13 @@ jobs:
     
     - name: Commit tracking data
       run: |
-        git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+        git config --local user.email "github-actions[bot]@users.noreply.github.com"
         git config --local user.name "github-actions[bot]"
-        git add .tracking/published_posts.json .queue/post_queue.json || true
-        git diff --quiet && git diff --staged --quiet || (git commit -m "Update published posts tracking data [skip ci]" && git push origin HEAD:${GITHUB_REF})
+        # Add all modified files
+        git add scripts/**/*.py
+        git add .tracking/published_posts.json .queue/post_queue.json
+        git status
+        # Only commit if there are changes
+        git diff --quiet && git diff --staged --quiet || (git commit -m "Update scripts and tracking data [skip ci]" && git push origin HEAD:${GITHUB_REF})
       env:
         GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
