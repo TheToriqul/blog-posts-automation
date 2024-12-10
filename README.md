@@ -27,6 +27,7 @@ It's that simple! Get started in under a minute.
 - **Platform-Optimized**: Automatically formats content to look perfect on each platform
 - **Battle-Tested**: Robust error handling and retry mechanisms ensure reliable publishing
 - **Developer-Friendly**: Clean architecture, comprehensive logging, and easy extensibility
+- **Scheduled Publishing**: Automated publishing at optimal times (Tuesday/Thursday 13:00 UTC, Saturday 15:00 UTC)
 
 ## 📊 Key Metrics
 
@@ -36,14 +37,20 @@ It's that simple! Get started in under a minute.
 - 📈 **100% Platform Coverage** for Medium and Dev.to
 - 🚀 **3x Faster** content distribution
 - 💪 **24/7 Reliability** with automated recovery
+- 🕒 **Scheduled Publishing** for optimal reach
 
 ## 🏗️ Architectural Excellence
-This blog automation system enables developers to write content once in Markdown and automatically publish it across multiple platforms (Medium and Dev.to) while maintaining content integrity through robust tracking and caching mechanisms. The architecture follows a streamlined flow: content management handles the posts and tracking, processing converts and formats the content appropriately, monitoring ensures reliability through error handling and retries, and finally, the publishing layer manages rate-limiting and platform-specific distributions.
 
-<figure >
+The architecture is designed around a seamless content publishing pipeline with four key components: Content Management, Queue Management, Processing, and Publishing. Content originates in GitHub repositories and flows through Posts, where the Queue Management system takes control. This new queuing system intelligently schedules posts for publication at predetermined times (Tuesday/Thursday at 13:00 UTC and Saturday at 15:00 UTC), maintaining a robust tracking mechanism to prevent duplicate publications.
+
+The Process section handles content transformation, converting markdown to platform-specific formats while managing images and formatting. Simultaneously, the Monitor component provides comprehensive logging, error handling, and automatic retry mechanisms for failed publications. This ensures reliability and recovery from common issues like rate limits or API timeouts.
+
+Finally, the Publish component manages the actual distribution to multiple platforms (Medium and Dev.to) with built-in rate limiting to respect platform-specific API constraints. The entire system is designed for automation and reliability, requiring minimal manual intervention once content is pushed to GitHub.
+
+<figure>
   <p align="center">
-      <img src="./architecture.png" alt="project architecture" />
-      <p align="center">Project Architecture</p> 
+      <img src="./architecture.png" alt="Updated project architecture" />
+      <p align="center">Enhanced Project Architecture</p> 
   </p>
 </figure>
 
@@ -79,6 +86,12 @@ This blog automation system enables developers to write content once in Markdown
 - CI/CD pipeline for content delivery
 - Scheduled publishing support
 
+### 6. Scheduled Publishing
+- Optimal time slots for maximum reach
+- Queue-based publication management
+- Timezone-aware scheduling
+- Flexible scheduling configuration
+
 ## 💫 Why Choose This Solution?
 
 | Feature | Manual Publishing | Other Tools | This Project |
@@ -91,7 +104,7 @@ This blog automation system enables developers to write content once in Markdown
 | Customization | Limited | Moderate | Fully Customizable |
 | Community Support | None | Varies | Active Community |
 | Integration | Manual | Limited | Extensive |
-
+| Scheduling | Manual | Basic | Advanced |
 
 ## 🚀 Getting Started
 
@@ -162,6 +175,13 @@ python scripts/publish_posts.py
 - Push to GitHub
 - GitHub Actions handles the rest
 - Check status in Actions tab
+
+3. **Scheduled Publishing**
+- Posts are automatically queued
+- Published at optimal times:
+  - Tuesday/Thursday: 13:00 UTC
+  - Saturday: 15:00 UTC
+- Queue status tracked in `.queue/post_queue.json`
 
 ## 🔍 Advanced Usage
 
@@ -236,16 +256,16 @@ RETRY_DELAYS = [30, 60, 120]  # seconds
 ## 🌟 Success Stories
 
 > "This automation tool transformed our content distribution process. What used to take hours now happens in seconds." 
-> *- John Doe, Lead Technical Writer*
+> *- Golap Hossain, Technical Writer*
 
 > "Finally found a solution that handles everything - from Markdown to publishing - without any hiccups."
-> *- Jane Smith, Developer Advocate*
+> *- Nahid, DevOps Engineer*
 
 > "The perfect tool for busy content creators. Set it up once and forget about manual cross-posting forever."
 > *- Tech Community Review*
 
 > "Our team's productivity increased significantly after implementing this automation pipeline."
-> *- Enterprise User*
+> *- Anonymous User*
 
 ## 🤝 Contributing
 
@@ -298,6 +318,9 @@ Let's discuss tech, automation, and more!
 - [ ] Advanced analytics
 - [ ] AI-powered content optimization
 - [ ] Custom website integration
+- [ ] Enhanced scheduling options
+- [ ] Multi-timezone support
+- [ ] Content performance tracking
 
 ---
 
