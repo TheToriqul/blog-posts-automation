@@ -1,37 +1,56 @@
 {
   "TestPost.md": {
-    "added_at": "2024-12-09T13:02:04.745151+00:00",
-    "completed_at": "2024-12-09T13:02:04.745488+00:00",
-    "platforms": [],
-    "scheduled_time": "2024-12-09T13:02:04.745151+00:00",
-    "status": "completed"
+    "added_at": "2024-12-12T15:58:55.830297+00:00",
+    "platforms": [
+      "medium",
+      "devto"
+    ],
+    "scheduled_time": "2024-12-14T15:00:00+00:00",
+    "status": "queued"
   },
   "blog-test-post.md": {
-    "added_at": "2024-12-09T13:12:26.505893+00:00",
-    "completed_at": "2024-12-09T13:12:26.506299+00:00",
-    "platforms": [],
-    "scheduled_time": "2024-12-09T13:12:26.505893+00:00",
-    "status": "completed"
+    "added_at": "2024-12-12T15:58:55.831111+00:00",
+    "platforms": [
+      "medium",
+      "devto"
+    ],
+    "scheduled_time": "2024-12-14T15:00:00+00:00",
+    "status": "queued"
   },
   "cross-platform-blog-automation.md": {
-    "added_at": "2024-12-10T14:10:40.390277+00:00",
-    "completed_at": "2024-12-10T14:10:40.390772+00:00",
-    "platforms": [],
-    "scheduled_time": "2024-12-10T14:10:40.390277+00:00",
-    "status": "completed"
+    "added_at": "2024-12-12T15:58:55.829151+00:00",
+    "platforms": [
+      "medium",
+      "devto"
+    ],
+    "scheduled_time": "2024-12-14T15:00:00+00:00",
+    "status": "queued"
   },
   "example-post.md": {
-    "added_at": "2024-12-09T13:03:32.997442+00:00",
-    "completed_at": "2024-12-09T13:03:32.997812+00:00",
-    "platforms": [],
-    "scheduled_time": "2024-12-09T13:03:32.997442+00:00",
-    "status": "completed"
+    "added_at": "2024-12-12T15:58:55.830732+00:00",
+    "platforms": [
+      "medium",
+      "devto"
+    ],
+    "scheduled_time": "2024-12-14T15:00:00+00:00",
+    "status": "queued"
+  },
+  "single-container-app.md": {
+    "added_at": "2024-12-12T15:58:55.829903+00:00",
+    "platforms": [
+      "medium",
+      "devto"
+    ],
+    "scheduled_time": "2024-12-14T15:00:00+00:00",
+    "status": "queued"
   },
   "wbgt-alert-system.md": {
-    "added_at": "2024-12-09T13:02:03.471699+00:00",
-    "completed_at": "2024-12-09T13:02:03.472007+00:00",
-    "platforms": [],
-    "scheduled_time": "2024-12-09T13:02:03.471699+00:00",
-    "status": "completed"
+    "added_at": "2024-12-12T15:58:55.828756+00:00",
+    "platforms": [
+      "medium",
+      "devto"
+    ],
+    "scheduled_time": "2024-12-14T15:00:00+00:00",
+    "status": "queued"
   }
 }
