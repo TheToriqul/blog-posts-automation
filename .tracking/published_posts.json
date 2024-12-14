@@ -59,6 +59,21 @@
       }
     }
   },
+  "single-container-app.md": {
+    "first_published_at": "2024-12-14T15:14:08.726602",
+    "platforms": {
+      "devto": {
+        "platform_id": 2156635,
+        "published_at": "2024-12-14T15:14:09.404449",
+        "url": "https://dev.to/thetoriqul/containercraft-a-deep-dive-into-nodejs-containerization-469h"
+      },
+      "medium": {
+        "platform_id": "0ecdaa51a29c",
+        "published_at": "2024-12-14T15:14:08.726613",
+        "url": "https://medium.com/@TheToriqul/containercraft-a-deep-dive-into-node-js-containerization-0ecdaa51a29c"
+      }
+    }
+  },
   "wbgt-alert-system.md": {
     "first_published_at": "2024-12-09T13:02:02.898293",
     "platforms": {
