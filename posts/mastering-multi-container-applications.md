@@ -1,6 +1,6 @@
 ---
-title: Mastering Multi-Container Applications: A Journey with Docker Compose, Flask, and Redis
-description: Explore the architecture, implementation, and best practices of building production-ready containerized applications using Docker Compose, Flask, and Redis
+title: "Mastering Multi-Container Applications: A Journey with Docker Compose, Flask, and Redis"
+description: "Explore the architecture, implementation, and best practices of building production-ready containerized applications using Docker Compose, Flask, and Redis"
 tags: docker,containerization,microservices,devops,software-architecture,flask
 canonicalUrl: https://medium.com/@thetoriqul/mastering-multi-container-applications
 published: true
