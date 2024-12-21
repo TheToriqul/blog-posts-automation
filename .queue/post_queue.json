@@ -36,13 +36,11 @@
     "status": "queued"
   },
   "mastering-multi-container-applications.md": {
-    "added_at": "2024-12-20T01:06:56.223861+00:00",
-    "platforms": [
-      "medium",
-      "devto"
-    ],
-    "scheduled_time": "2024-12-21T15:00:00+00:00",
-    "status": "queued"
+    "added_at": "2024-12-21T15:12:42.951545+00:00",
+    "completed_at": "2024-12-21T15:12:42.951963+00:00",
+    "platforms": [],
+    "scheduled_time": "2024-12-24T13:00:00+00:00",
+    "status": "completed"
   },
   "single-container-app.md": {
     "added_at": "2024-12-20T01:06:56.222341+00:00",

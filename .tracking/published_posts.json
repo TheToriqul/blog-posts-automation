@@ -59,6 +59,21 @@
       }
     }
   },
+  "mastering-multi-container-applications.md": {
+    "first_published_at": "2024-12-21T15:12:42.377210",
+    "platforms": {
+      "devto": {
+        "platform_id": 2168516,
+        "published_at": "2024-12-21T15:12:42.951015",
+        "url": "https://dev.to/thetoriqul/mastering-multi-container-applications-a-journey-with-docker-compose-flask-and-redis-2p28"
+      },
+      "medium": {
+        "platform_id": "139f68c8b25b",
+        "published_at": "2024-12-21T15:12:42.377219",
+        "url": "https://medium.com/@TheToriqul/mastering-multi-container-applications-a-journey-with-docker-compose-flask-and-redis-139f68c8b25b"
+      }
+    }
+  },
   "single-container-app.md": {
     "first_published_at": "2024-12-14T15:14:08.726602",
     "platforms": {
