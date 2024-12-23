@@ -6,7 +6,6 @@ canonicalUrl: https://github.com/TheToriqul/k8s-autoscaling
 published: true
 ---
 # A Complete Guide to Production-Grade Kubernetes Autoscaling
-![Kubernetes Autoscaling Header Image](https://github.com/TheToriqul/k8s-autoscaling/raw/main/assets/header.png)
 
 ## Introduction
 
