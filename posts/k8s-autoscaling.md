@@ -1,6 +1,6 @@
 ---
-title: A Complete Guide to Production-Grade Kubernetes Autoscaling
-description: Discover how to implement robust autoscaling in Kubernetes using HPA with CPU and memory metrics, complete with real-world implementation strategies and architectural insights
+title: "A Complete Guide to Production-Grade Kubernetes Autoscaling"
+description: "Discover how to implement robust autoscaling in Kubernetes using HPA with CPU and memory metrics, complete with real-world implementation strategies and architectural insights"
 tags: kubernetes,devops,containerization,automation,cloud-native,docker,nginx,autoscaling
 canonicalUrl: https://github.com/TheToriqul/k8s-autoscaling
 published: true
