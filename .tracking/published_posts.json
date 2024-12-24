@@ -59,6 +59,21 @@
       }
     }
   },
+  "k8s-autoscaling.md": {
+    "first_published_at": "2024-12-24T13:23:25.185971",
+    "platforms": {
+      "devto": {
+        "platform_id": 2172890,
+        "published_at": "2024-12-24T13:23:25.612493",
+        "url": "https://dev.to/thetoriqul/a-complete-guide-to-production-grade-kubernetes-autoscaling-5boe"
+      },
+      "medium": {
+        "platform_id": "1c26d95995e7",
+        "published_at": "2024-12-24T13:23:25.185981",
+        "url": "https://medium.com/@TheToriqul/a-complete-guide-to-production-grade-kubernetes-autoscaling-1c26d95995e7"
+      }
+    }
+  },
   "mastering-multi-container-applications.md": {
     "first_published_at": "2024-12-21T15:12:42.377210",
     "platforms": {
