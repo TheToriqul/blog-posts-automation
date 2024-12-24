@@ -50,7 +50,7 @@ Finally, the Publish component manages the actual distribution to multiple platf
 <figure>
   <p align="center">
       <img src="./architecture.png" alt="Updated project architecture" />
-      <p align="center">Enhanced Project Architecture</p> 
+      <p align="center">Automation Project Architecture</p> 
   </p>
 </figure>
 
