@@ -35,13 +35,6 @@
     "scheduled_time": "2024-12-24T13:00:00+00:00",
     "status": "queued"
   },
-  "k8s-autoscaling.md": {
-    "added_at": "2024-12-24T13:23:25.612969+00:00",
-    "completed_at": "2024-12-24T13:23:25.613297+00:00",
-    "platforms": [],
-    "scheduled_time": "2024-12-26T13:00:00+00:00",
-    "status": "completed"
-  },
   "mastering-multi-container-applications.md": {
     "added_at": "2024-12-23T17:00:13.098385+00:00",
     "platforms": [
