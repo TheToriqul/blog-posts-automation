@@ -154,8 +154,8 @@ Create your blog post in Markdown with rich frontmatter:
 
 ```markdown
 ---
-title: Your Engaging Title
-description: A compelling description
+title: "Your Engaging Title"
+description: "A compelling description"
 tags: technology,programming,automation
 canonicalUrl: https://yourblog.com/post
 published: true
