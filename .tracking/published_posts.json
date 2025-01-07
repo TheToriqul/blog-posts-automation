@@ -74,6 +74,21 @@
       }
     }
   },
+  "leetcode-github-sync.md": {
+    "first_published_at": "2025-01-07T12:04:43.471678",
+    "platforms": {
+      "devto": {
+        "platform_id": 2193044,
+        "published_at": "2025-01-07T12:04:44.560282",
+        "url": "https://dev.to/thetoriqul/automating-your-leetcode-journey-building-an-enterprise-grade-leetcode-to-github-sync-system-3cig"
+      },
+      "medium": {
+        "platform_id": "1f535ad95c6d",
+        "published_at": "2025-01-07T12:04:43.471686",
+        "url": "https://medium.com/@TheToriqul/automating-your-leetcode-journey-building-an-enterprise-grade-leetcode-to-github-sync-system-1f535ad95c6d"
+      }
+    }
+  },
   "mastering-multi-container-applications.md": {
     "first_published_at": "2024-12-21T15:12:42.377210",
     "platforms": {
