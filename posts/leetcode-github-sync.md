@@ -1,4 +1,12 @@
-# Automating Your LeetCode Journey: Building a GitHub Solution Archive
+---
+title: "Automating Your LeetCode Journey: Building an Enterprise-Grade LeetCode to GitHub Sync System"
+description: "Learn how to create a secure, automated system for syncing your LeetCode solutions to GitHub. Move past browser extensions to a professional-grade solution with comprehensive documentation, analytics, and enterprise security features."
+tags: leetcode,github,python,automation,programming,softwareEngineering,codingInterviews
+canonicalUrl: https://github.com/TheToriqul/leetcode-solutions
+published: true
+---
+
+# Automating Your LeetCode Journey: Building an Enterprise-Grade LeetCode to GitHub Sync System
 
 ## Introduction
 
