@@ -1,3 +1,10 @@
+---
+title: "Managing Sensitive Data in Kubernetes: A Comprehensive Guide to K8s Secrets"
+description: "Learn how to implement, secure, and manage Kubernetes Secrets effectively with practical examples and production-ready patterns"
+tags: kubernetes,devops,security,cloud-native,docker,k8s
+canonicalUrl: https://github.com/TheToriqul/k8s-secret
+published: true
+---
 # Managing Sensitive Data in Kubernetes: A Comprehensive Guide to K8s Secrets
 
 ![Cover Image](https://raw.githubusercontent.com/TheToriqul/k8s-secret/main/architecture.png)
@@ -6,7 +13,7 @@
 
 ## Introduction
 
-As applications move to Kubernetes, managing sensitive data like API keys, passwords, and certificates becomes increasingly critical. While Kubernetes Secrets offer a solution, implementing them correctly requires understanding various patterns and security considerations.
+In modern cloud-native applications move to Kubernetes, managing sensitive data like API keys, passwords, and certificates becomes increasingly critical. While Kubernetes Secrets offer a solution, implementing them correctly requires understanding various patterns and security considerations.
 
 In this guide, I'll share my experience implementing a production-ready secrets management system in Kubernetes.
 
@@ -187,7 +194,3 @@ Let's discuss Kubernetes security and DevOps practices:
 - 📧 Email: toriqul.int@gmail.com
 - 🌐 LinkedIn: [@TheToriqul](https://linkedin.com/in/thetoriqul)
 - 🐙 GitHub: [@TheToriqul](https://github.com/TheToriqul)
-
----
-
-*Tags: #kubernetes #devops #security #docker #cloudnative #k8s #programming #cloud*
