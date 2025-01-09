@@ -74,6 +74,21 @@
       }
     }
   },
+  "kubernetes-secrets.md": {
+    "first_published_at": "2025-01-09T13:26:27.381799",
+    "platforms": {
+      "devto": {
+        "platform_id": 2197387,
+        "published_at": "2025-01-09T13:26:30.832814",
+        "url": "https://dev.to/thetoriqul/managing-sensitive-data-in-kubernetes-a-comprehensive-guide-to-k8s-secrets-24gg"
+      },
+      "medium": {
+        "platform_id": "3e0bdae9e705",
+        "published_at": "2025-01-09T13:26:27.381810",
+        "url": "https://medium.com/@TheToriqul/managing-sensitive-data-in-kubernetes-a-comprehensive-guide-to-k8s-secrets-3e0bdae9e705"
+      }
+    }
+  },
   "leetcode-github-sync.md": {
     "first_published_at": "2025-01-07T12:04:43.471678",
     "platforms": {
