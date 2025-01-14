@@ -74,6 +74,21 @@
       }
     }
   },
+  "k8s-persistent-volumes.md": {
+    "first_published_at": "2025-01-14T13:22:38.906262",
+    "platforms": {
+      "devto": {
+        "platform_id": 2207343,
+        "published_at": "2025-01-14T13:22:40.208577",
+        "url": "https://dev.to/thetoriqul/mastering-kubernetes-storage-a-deep-dive-into-persistent-volumes-and-claims-nj6"
+      },
+      "medium": {
+        "platform_id": "9c19348d947e",
+        "published_at": "2025-01-14T13:22:38.906273",
+        "url": "https://medium.com/@TheToriqul/mastering-kubernetes-storage-a-deep-dive-into-persistent-volumes-and-claims-9c19348d947e"
+      }
+    }
+  },
   "kubernetes-secrets.md": {
     "first_published_at": "2025-01-09T13:26:27.381799",
     "platforms": {
