@@ -44,13 +44,6 @@
     "scheduled_time": "2025-01-14T13:00:00+00:00",
     "status": "queued"
   },
-  "k8s-persistent-volumes.md": {
-    "added_at": "2025-01-14T13:22:40.209227+00:00",
-    "completed_at": "2025-01-14T13:22:40.209671+00:00",
-    "platforms": [],
-    "scheduled_time": "2025-01-16T13:00:00+00:00",
-    "status": "completed"
-  },
   "kubernetes-secrets.md": {
     "added_at": "2025-01-12T10:32:33.863810+00:00",
     "platforms": [
